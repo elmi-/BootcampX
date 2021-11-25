@@ -9,11 +9,7 @@ const pool = new Pool({
 
 const limit = process.argv[2];
 
-pool.query(`
-  SELECT students.id, students.name as student, cohorts.name as cohort
-  FROM students
-  JOIN cohorts ON cohorts.id = students.cohort_id
-  LIMIT ${limit || 5};`)
+pool.query("SELECT students.id, students.name as student, cohorts.name as cohort FROM students JOIN cohorts ON cohorts.id = students.cohort_id LIMIT $1;", [parseInt(limit)])
   .then(res => {
     res.rows.forEach(user => {
       console.log(`${user.student} has an id of ${user.id} and was in the ${user.cohort} cohort`);
